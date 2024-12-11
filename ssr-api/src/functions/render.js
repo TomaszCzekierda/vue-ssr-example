@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import { app } from '@azure/functions';
+import { getAppState } from '../core/middleware.js';
 app.http('render', {
   methods: ['GET'],
   authLevel: 'anonymous',
@@ -7,7 +8,8 @@ app.http('render', {
     try {
       const template = await fs.readFile('./dist/clientssr/index.html', 'utf-8');
       const render = (await import('../../dist/serverssr/main-ssr-server.js')).render;
-      const rendered = await render();
+      const { route, state } = getAppState();
+      const rendered = await render(route, state);
       const html = template.replace(`<!--app-head-->`, rendered.head ?? '').replace(`<!--app-html-->`, rendered.html ?? '');
       return {
         status: 200,

@@ -9,7 +9,7 @@ export function createApp() {
   const app = isSSR() ? createSSRApp(App) : vueCreateApp(App);
   app.use(router);
   app.use(store);
-  return { app };
+  return { app, router, store };
 }
 
 if (!isSSR()) {
