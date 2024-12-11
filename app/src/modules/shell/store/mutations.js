@@ -5,11 +5,11 @@ export default {
     state.menu = [
       {
         label: 'Start',
-        href: '/#/',
+        href: 'start',
       },
       {
         label: 'About',
-        href: '/#/about/',
+        href: 'about',
       },
     ];
   },

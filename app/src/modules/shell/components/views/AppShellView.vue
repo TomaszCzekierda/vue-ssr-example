@@ -5,7 +5,7 @@
     </div>
     <div class="app-shell-view__menu">
       <div class="app-shell-view__menu__layout">
-        <a class="app-shell-view__menu__layout__link" v-for="(menuItem, index) in menu" :key="index" :href="menuItem.href">{{ menuItem.label }}</a>
+        <a class="app-shell-view__menu__layout__link" v-for="(menuItem, index) in menu" :key="index" @click="onClick(menuItem.href)">{{ menuItem.label }}</a>
       </div>
     </div>
     <div class="app-shell-view__content">
@@ -25,6 +25,9 @@ export default {
     ...mapActions({
       initialize: shellTypes.actions.INITIALIZE,
     }),
+    onClick(href) {
+      this.$router.push({ name: href });
+    },
   },
   mounted() {
     this.initialize();

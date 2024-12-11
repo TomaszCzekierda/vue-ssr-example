@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:clientssrDev": "vite build --mode development --outDir ../ssr-api/dist/clientssr --emptyOutDir",
+    "build:serverssrDev": "vite build --mode development --ssr src/main-ssr-server.js --outDir ../ssr-api/dist/serverssr --emptyOutDir",
+    "build:ssrDev": "npm run build:clientssrDev && npm run build:serverssrDev"
   },
   "dependencies": {
     "vue": "^3.5.13",

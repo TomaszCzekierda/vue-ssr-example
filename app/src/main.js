@@ -1,10 +1,18 @@
-import { createApp } from 'vue';
+import { createSSRApp, createApp as vueCreateApp } from 'vue';
 import './style.css';
 import App from './App.vue';
 import store from './store';
 import router from './router';
+import { isSSR } from './modules/utils/ssr';
 
-const app = createApp(App);
-app.use(store);
-app.use(router);
-app.mount('#app');
+export function createApp() {
+  const app = isSSR() ? createSSRApp(App) : vueCreateApp(App);
+  app.use(router);
+  app.use(store);
+  return { app };
+}
+
+if (!isSSR()) {
+  const { app } = createApp();
+  app.mount('#app');
+}
