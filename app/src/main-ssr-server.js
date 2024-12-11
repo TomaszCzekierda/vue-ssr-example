@@ -8,5 +8,5 @@ export async function render(route, initialState) {
   router.push({ name: route });
   await router.isReady();
   const html = await renderToString(app, {});
-  return { html };
+  return { html, state: store.state };
 }

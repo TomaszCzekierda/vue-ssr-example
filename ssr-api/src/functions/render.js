@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import { app } from '@azure/functions';
 import { getAppState } from '../core/middleware.js';
+import { serializeHydration } from '../core/hydration.js';
 app.http('render', {
   methods: ['GET'],
   authLevel: 'anonymous',
@@ -10,7 +11,11 @@ app.http('render', {
       const render = (await import('../../dist/serverssr/main-ssr-server.js')).render;
       const { route, state } = getAppState();
       const rendered = await render(route, state);
-      const html = template.replace(`<!--app-head-->`, rendered.head ?? '').replace(`<!--app-html-->`, rendered.html ?? '');
+      const initialState = serializeHydration(route, rendered.state);
+      const html = template
+        .replace(`<!--app-head-->`, rendered.head ?? '')
+        .replace(`<!--app-html-->`, rendered.html ?? '')
+        .replace(`<!--initial-state-->`, initialState ?? '');
       return {
         status: 200,
         headers: { 'Content-Type': 'text/html' },

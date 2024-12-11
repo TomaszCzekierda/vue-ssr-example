@@ -3,7 +3,7 @@ import './style.css';
 import App from './App.vue';
 import store from './store';
 import router from './router';
-import { isSSR } from './modules/utils/ssr';
+import { isSSR, hydrate } from './modules/utils/ssr';
 
 export function createApp() {
   const app = isSSR() ? createSSRApp(App) : vueCreateApp(App);
@@ -13,6 +13,9 @@ export function createApp() {
 }
 
 if (!isSSR()) {
-  const { app } = createApp();
-  app.mount('#app');
+  (async () => {
+    const { app, store, router } = createApp();
+    await hydrate(store, router);
+    app.mount('#app');
+  })();
 }
